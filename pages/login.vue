@@ -33,11 +33,11 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-700 via-blue-500 to-black">
-    <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-xl border-2 border-blue-500">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-700 via-[#05E856] to-black">
+    <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-xl border-2" style="border-color: #05E856;">
       <!-- Logo ajustado -->
       <div class="flex justify-center mb-6">
-        <img src="/icon.png" alt="Logo" class="h-32 w-auto">
+        <img src="/icon.png" alt="Logo" class="h-42 w-auto">
       </div>
 
       <!-- Formulario -->
