@@ -37,7 +37,7 @@ const handleLogin = async () => {
     <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-xl border-2" style="border-color: #05E856;">
       <!-- Logo ajustado -->
       <div class="flex justify-center mb-6">
-        <img src="/icon.png" alt="Logo" class="h-42 w-auto" loading="eager">
+        <img src="/icon.png" alt="Logo" class="h-42 w-auto" loading="eager" decoding="async">
       </div>
 
       <!-- Formulario -->
