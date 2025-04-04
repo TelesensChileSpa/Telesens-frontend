@@ -17,5 +17,11 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'netlify'
+  },
+
+  typescript: {
+    tsConfig: {
+      configFile: 'tsconfig.app.json'
+    }
   }
-})
+});
