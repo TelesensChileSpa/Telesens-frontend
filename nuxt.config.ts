@@ -16,12 +16,24 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-03-17',
 
   nitro: {
-    preset: 'netlify'
+    preset: 'netlify',
   },
 
   typescript: {
     tsConfig: {
-      configFile: 'tsconfig.app.json'
-    }
-  }
+      configFile: 'tsconfig.app.json',
+    },
+  },
+
+  app: {
+    head: {
+      link: [
+        {
+          rel: 'icon',
+          href: '/favicon.ico',  // Ruta al favicon en public/
+          type: 'image/x-icon',
+        },
+      ],
+    },
+  },
 });

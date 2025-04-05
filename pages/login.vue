@@ -86,25 +86,27 @@ const handleLogin = async () => {
             class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 text-black dark:text-white border border-[#4CAF50] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] placeholder-gray-400" />
         </div>
 
-        <!-- Input de contraseña con botón para mostrar/ocultar -->
-        <div class="relative flex items-center">
+        <!-- Input de contraseña con label encima y botón para mostrar/ocultar -->
+        <div class="relative">
           <label for="contraseña" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Contraseña
           </label>
-          <input :type="showPassword ? 'text' : 'password'" id="contraseña" v-model="contraseña"
-            placeholder="Ingrese su contraseña" aria-label="Contraseña" :aria-invalid="errorMessage ? 'true' : 'false'"
-            class="w-full px-4 py-2 pr-10 bg-gray-50 dark:bg-gray-700 text-black dark:text-white border border-[#4CAF50] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] placeholder-gray-400" />
+          <div class="relative">
+            <input :type="showPassword ? 'text' : 'password'" id="contraseña" v-model="contraseña"
+              placeholder="Ingrese su contraseña" aria-label="Contraseña" :aria-invalid="errorMessage ? 'true' : 'false'"
+              class="w-full px-4 py-2 pr-10 bg-gray-50 dark:bg-gray-700 text-black dark:text-white border border-[#4CAF50] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] placeholder-gray-400" />
 
-          <!-- Botón para mostrar/ocultar la contraseña -->
-          <button type="button" @click="showPassword = !showPassword"
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 hover:text-[#4CAF50] focus:outline-none">
-            <span v-if="showPassword">
-              <EyeOff class="w-6 h-6" /> <!-- Ícono para ocultar -->
-            </span>
-            <span v-else>
-              <Eye class="w-6 h-6" /> <!-- Ícono para mostrar -->
-            </span>
-          </button>
+            <!-- Botón para mostrar/ocultar la contraseña -->
+            <button type="button" @click="showPassword = !showPassword"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 hover:text-[#4CAF50] focus:outline-none">
+              <span v-if="showPassword">
+                <EyeOff class="w-6 h-6" /> <!-- Ícono para ocultar -->
+              </span>
+              <span v-else>
+                <Eye class="w-6 h-6" /> <!-- Ícono para mostrar -->
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
