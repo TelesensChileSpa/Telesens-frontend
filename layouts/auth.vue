@@ -18,13 +18,7 @@ onMounted(() => {
       <section :class="[
         isDarkMode ? 'text-white border-gray-700' : 'text-grayColor border-gray-200'
       ]" class="border-t-2 py-4 px-14 flex flex-col items-center text-center gap-2 lg:flex-row lg:justify-between">
-        <h4>Copyright © 2025 Telesens Chile.</h4>
-        <div class="flex gap-1">
-          <a href="https://instagram.com/TelesensChile" target="_blank" rel="noopener noreferrer">
-          </a>
-          <a href="https://www.linkedin.com/company/TelesensChile/" target="_blank" rel="noopener noreferrer">
-          </a>
-        </div>
+        <h4 class="w-full text-center">Copyright © 2025 Telesens Chile Spa.</h4>
       </section>
     </footer>
   </div>

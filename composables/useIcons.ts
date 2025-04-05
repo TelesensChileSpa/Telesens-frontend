@@ -1,4 +1,4 @@
-import { Sun, Moon, Eye, EyeOff, User, Lock } from 'lucide-vue-next';
+import { Sun, Moon, Eye, EyeOff, User, Lock, LogIn } from 'lucide-vue-next';
 
 export function useIcons() {
     return {
@@ -8,8 +8,8 @@ export function useIcons() {
         EyeOff,
         User,
         Lock,
+        LogIn
     };
 }
 
-// Exporta los íconos individualmente si prefieres hacerlo de esa manera también
-export { Sun, Moon, Eye, EyeOff, User, Lock };
+export { Sun, Moon, Eye, EyeOff, User, Lock, LogIn };

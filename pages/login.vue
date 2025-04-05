@@ -3,11 +3,11 @@ import { ref, onMounted } from 'vue';
 import { useAuth } from '~/composables/useAuth';
 import { useRouter } from 'vue-router';
 import { useTheme } from '~/composables/useTheme';
-import { Sun, Moon, Eye, EyeOff } from '~/composables/useIcons';
+import { Sun, Moon, Eye, EyeOff, User, Lock, LogIn } from '~/composables/useIcons';
 
-definePageMeta({
-  layout: 'auth',
-});
+  definePageMeta({
+    layout: 'auth',
+  });
 
 const usuario = ref('');
 const contraseña = ref('');
@@ -77,25 +77,34 @@ const handleLogin = async () => {
 
       <!-- Formulario de inicio de sesión -->
       <div class="space-y-6">
-        <div>
+        <div class="relative">
           <label for="usuario" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Usuario o correo
           </label>
-          <input id="usuario" v-model="usuario" type="text" placeholder="Ingrese su usuario o correo"
-            aria-label="Usuario" :aria-invalid="errorMessage ? 'true' : 'false'"
-            class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 text-black dark:text-white border border-[#4CAF50] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] placeholder-gray-400" />
+          <div class="relative">
+            <!-- Icono de usuario dentro del input -->
+            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300">
+              <User class="w-5 h-5" /> <!-- Ícono de usuario de Lucide -->
+            </div>
+            <input id="usuario" v-model="usuario" type="text" placeholder="Ingrese su usuario o correo"
+              aria-label="Usuario" :aria-invalid="errorMessage ? 'true' : 'false'"
+              class="w-full px-4 py-2 pl-10 bg-gray-50 dark:bg-gray-700 text-black dark:text-white border border-[#4CAF50] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] placeholder-gray-400" />
+          </div>
         </div>
-
         <!-- Input de contraseña con label encima y botón para mostrar/ocultar -->
         <div class="relative">
           <label for="contraseña" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Contraseña
           </label>
           <div class="relative">
+            <!-- Icono de candado dentro del input -->
+            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300">
+              <Lock class="w-5 h-5" /> <!-- Ícono de candado de Lucide -->
+            </div>
             <input :type="showPassword ? 'text' : 'password'" id="contraseña" v-model="contraseña"
               placeholder="Ingrese su contraseña" aria-label="Contraseña"
               :aria-invalid="errorMessage ? 'true' : 'false'"
-              class="w-full px-4 py-2 pr-10 bg-gray-50 dark:bg-gray-700 text-black dark:text-white border border-[#4CAF50] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] placeholder-gray-400" />
+              class="w-full px-4 py-2 pl-10 pr-10 bg-gray-50 dark:bg-gray-700 text-black dark:text-white border border-[#4CAF50] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] placeholder-gray-400" />
 
             <!-- Botón para mostrar/ocultar la contraseña -->
             <button type="button" @click="showPassword = !showPassword"
@@ -111,10 +120,11 @@ const handleLogin = async () => {
         </div>
       </div>
 
-      <!-- Botón para acceder -->
+      <!-- Botón para acceder con ícono de log-in al inicio -->
       <button @click="handleLogin" :disabled="isLoading"
-        class="w-full py-2 text-white font-semibold rounded-lg bg-gradient-to-r from-[#4CAF50] via-[#388E3C] to-[#2C6B2F] hover:from-[#388E3C] hover:to-[#4CAF50] focus:outline-none disabled:opacity-50 transition-all duration-300 ease-in-out">
-        {{ isLoading ? 'Cargando...' : 'Acceder' }}
+        class="w-full py-2 text-white font-semibold rounded-lg bg-gradient-to-r from-[#4CAF50] via-[#388E3C] to-[#2C6B2F] hover:from-[#388E3C] hover:to-[#4CAF50] focus:outline-none disabled:opacity-50 transition-all duration-300 ease-in-out flex items-center justify-center space-x-2">
+        <LogIn class="w-5 h-5" /> <!-- Ícono de log-in -->
+        <span>{{ isLoading ? 'Cargando...' : 'Acceder' }}</span>
       </button>
 
       <!-- Mensaje de error -->
