@@ -93,7 +93,8 @@ const handleLogin = async () => {
           </label>
           <div class="relative">
             <input :type="showPassword ? 'text' : 'password'" id="contraseña" v-model="contraseña"
-              placeholder="Ingrese su contraseña" aria-label="Contraseña" :aria-invalid="errorMessage ? 'true' : 'false'"
+              placeholder="Ingrese su contraseña" aria-label="Contraseña"
+              :aria-invalid="errorMessage ? 'true' : 'false'"
               class="w-full px-4 py-2 pr-10 bg-gray-50 dark:bg-gray-700 text-black dark:text-white border border-[#4CAF50] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] placeholder-gray-400" />
 
             <!-- Botón para mostrar/ocultar la contraseña -->
@@ -112,7 +113,7 @@ const handleLogin = async () => {
 
       <!-- Botón para acceder -->
       <button @click="handleLogin" :disabled="isLoading"
-        class="w-full py-2 bg-[#4CAF50] text-white font-semibold rounded-lg hover:bg-[#388E3C] focus:outline-none disabled:opacity-50">
+        class="w-full py-2 text-white font-semibold rounded-lg bg-gradient-to-r from-[#4CAF50] via-[#388E3C] to-[#2C6B2F] hover:from-[#388E3C] hover:to-[#4CAF50] focus:outline-none disabled:opacity-50 transition-all duration-300 ease-in-out">
         {{ isLoading ? 'Cargando...' : 'Acceder' }}
       </button>
 
