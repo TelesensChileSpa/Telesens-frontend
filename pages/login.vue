@@ -36,7 +36,7 @@ const handleLogin = async () => {
 
   try {
     await login({ usuario: usuario.value, contraseña: contraseña.value });
-    router.push('/users');
+    router.push('/');
   } catch (error: any) {
     errorMessage.value = error?.message || 'Credenciales incorrectas';
   } finally {
@@ -68,7 +68,7 @@ const handleLogin = async () => {
       <!-- Logo -->
       <div class="flex justify-center mb-4">
         <img
-          :src="isDarkMode ? '/Logo_Blanco_Sin_Sub.png' : 'https://res.cloudinary.com/dobkjiqyn/image/upload/v1743803502/icon_rjjvfl.png'"
+          :src="isDarkMode ? 'https://res.cloudinary.com/dobkjiqyn/image/upload/v1743895141/Logo_Blanco_Sin_Sub_riptvs.png' : 'https://res.cloudinary.com/dobkjiqyn/image/upload/v1743803502/icon_rjjvfl.png'"
           alt="Logo" class="h-36 w-auto" loading="eager" decoding="async" />
       </div>
 

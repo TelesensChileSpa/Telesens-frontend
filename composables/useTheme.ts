@@ -6,13 +6,13 @@ export function useTheme() {
   const initTheme = () => {
     const savedTheme = localStorage.getItem('theme');
     isDarkMode.value = savedTheme === 'dark';
-    document.documentElement.classList.toggle('dark', isDarkMode.value);
+    document.documentElement.classList[isDarkMode.value ? 'add' : 'remove']('dark');
   };
 
   const toggleTheme = () => {
     isDarkMode.value = !isDarkMode.value;
     localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', isDarkMode.value);
+    document.documentElement.classList[isDarkMode.value ? 'add' : 'remove']('dark');
   };
 
   return {
