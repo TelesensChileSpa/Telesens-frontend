@@ -23,16 +23,15 @@ const handleLogout = () => {
 </script>
 
 <template>
-    <!-- NAVBAR con altura fija -->
-    <nav
-        class="w-full h-16 px-6 flex items-center justify-between shadow-md transition-colors duration-300 bg-gradient-to-r from-[#388E3C] to-[#1B5E20]">
+    <!-- NAVBAR con fondo translúcido y desenfoque -->
+    <nav class="w-full h-16 px-6 flex items-center justify-between shadow-md transition-colors duration-300 
+        bg-gradient-to-r from-[#388E3C] to-[#1B5E20] backdrop-blur-lg bg-opacity-40">
 
         <!-- LOGO más grande pero sin cambiar el alto del navbar -->
         <div class="flex items-center h-full">
             <img src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" alt="Logo"
                 class="h-full max-h-full object-contain drop-shadow-md" />
         </div>
-
 
         <!-- MENÚ: Texto más grande y fuente moderna, letras negras -->
         <ul class="hidden md:flex space-x-8 text-sm font-semibold text-black">
