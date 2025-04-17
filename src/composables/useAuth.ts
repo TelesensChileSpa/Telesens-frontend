@@ -15,10 +15,10 @@ export function useAuth() {
             const { accessToken } = await $fetch<{ accessToken: string }>(`${API_URL}/auth/login`, {
                 method: 'POST',
                 body: credentials,
+                credentials: 'include'
             });
 
             token.value = accessToken;
-            navigateTo('/users');
         } catch (error: any) {
             throw new Error(error?.message || 'Error al iniciar sesión');
         }

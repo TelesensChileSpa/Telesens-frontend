@@ -14,7 +14,7 @@ onMounted(() => {
     <div :class="{ 'bg-gray-900': isDarkMode, 'bg-[#f2f2f2]': !isDarkMode }" class="w-screen">
         <!-- Aquí puedes incluir solo el footer -->
         <footer class="mt-auto">
-            <div class="h-2 mt-2 bg-gradient-to-r from-[#66BB6A] via-[#4CAF50] to-[#2C6B2F]" />
+            <div class="h-2 mt-0 bg-gradient-to-r from-[#66BB6A] via-[#4CAF50] to-[#2C6B2F]" />
             <section :class="[
                 isDarkMode ? 'text-white border-gray-700' : 'text-grayColor border-gray-200'
             ]" class="border-t-2 py-4 px-6 text-center">
