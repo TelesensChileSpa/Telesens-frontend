@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useAuth } from '~/composables/useAuth';
-import { useRouter } from 'vue-router';
+import { useLogin } from '~/composables/useLogin';
 import { useTheme } from '~/composables/useTheme';
 import { Sun, Moon, Eye, EyeOff, User, Lock, LogIn } from '~/composables/useIcons';
 import { vAutoAnimate } from '@formkit/auto-animate';
@@ -10,45 +8,20 @@ definePageMeta({
   layout: 'auth',
 });
 
-const usuario = ref('');
-const contraseña = ref('');
-const showPassword = ref(false);
-const isLoading = ref(false);
-const errorMessage = ref('');
+const {
+  usuario,
+  contraseña,
+  showPassword,
+  isLoading,
+  errorMessage,
+  handleLogin
+} = useLogin({ redirectTo: '/' });
 
-const { login } = useAuth();
-const router = useRouter();
-
-const { isDarkMode, toggleTheme, initTheme } = useTheme();
-
-onMounted(() => {
-  initTheme();
-});
-
-const handleLogin = async () => {
-  isLoading.value = true;
-  errorMessage.value = '';
-
-  if (!usuario.value || !contraseña.value) {
-    errorMessage.value = 'Por favor, complete todos los campos.';
-    isLoading.value = false;
-    return;
-  }
-
-  try {
-    await login({ usuario: usuario.value, contraseña: contraseña.value });
-    router.push('/');
-  } catch (error: any) {
-    errorMessage.value = error?.message || 'Credenciales incorrectas';
-  } finally {
-    isLoading.value = false;
-  }
-};
+const { isDarkMode, toggleTheme } = useTheme();
 </script>
 
 <template>
-  <div :class="{ 'bg-gray-900': isDarkMode, 'bg-[#f2f2f2]': !isDarkMode }"
-    class="flex flex-1 items-center justify-center relative w-full overflow-hidden">
+  <div class="bg-[#f2f2f2] dark:bg-gray-900 flex flex-1 items-center justify-center relative w-full overflow-hidden">
 
     <!-- Botón para cambiar el tema -->
     <button @click="toggleTheme"
@@ -68,9 +41,15 @@ const handleLogin = async () => {
 
       <!-- Logo -->
       <div class="flex justify-center mb-4">
+        <!-- Logo claro (visible solo en modo claro) -->
         <img
-          :src="isDarkMode ? 'https://res.cloudinary.com/dobkjiqyn/image/upload/v1743895141/Logo_Blanco_Sin_Sub_riptvs.png' : 'https://res.cloudinary.com/dobkjiqyn/image/upload/v1743803502/icon_rjjvfl.png'"
-          alt="Logo" class="h-36 w-auto" loading="eager" decoding="async" />
+          src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1743803502/icon_rjjvfl.png"
+          alt="Logo Claro" class="h-36 w-auto block dark:hidden" />
+
+        <!-- Logo oscuro (visible solo en modo oscuro) -->
+        <img
+          src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1743895141/Logo_Blanco_Sin_Sub_riptvs.png"
+          alt="Logo Oscuro" class="h-36 w-auto hidden dark:block" />
       </div>
 
       <!-- Línea divisoria -->

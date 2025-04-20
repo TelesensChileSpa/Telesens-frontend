@@ -1,5 +1,12 @@
 module.exports = {
-    darkMode: 'class', // Asegúrate de que está configurado en 'class'
+    darkMode: 'class',
+    content: [
+      './components/**/*.{vue,js,ts}',
+      './layouts/**/*.vue',
+      './pages/**/*.vue',
+      './plugins/**/*.{js,ts}',
+      './app.vue',
+    ],
     theme: {
       extend: {},
     },

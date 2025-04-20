@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { useAuth } from '~/composables/useAuth';
 import { useRouter } from 'vue-router';
 
-export function useLogin() {
+export function useLogin({ redirectTo = '/users' } = {}) {
   const usuario = ref('');
   const contraseña = ref('');
   const isLoading = ref(false);
@@ -24,7 +24,7 @@ export function useLogin() {
 
     try {
       await login({ usuario: usuario.value, contraseña: contraseña.value });
-      router.push('/users');
+      router.push(redirectTo);
     } catch (error: any) {
       errorMessage.value = error?.message || 'Credenciales incorrectas';
     } finally {

@@ -1,23 +1,19 @@
-import { ref } from 'vue';
+export const useTheme = () => {
+  const colorMode = useColorMode();
 
-const isDarkMode = ref(false); // Fuera de la función: compartido globalmente
+  // Establecer el valor inicial usando el almacenamiento local
+  const isDarkMode = computed(() => colorMode.value === 'dark');
 
-export function useTheme() {
-  const initTheme = () => {
-    const savedTheme = localStorage.getItem('theme');
-    isDarkMode.value = savedTheme === 'dark';
-    document.documentElement.classList[isDarkMode.value ? 'add' : 'remove']('dark');
-  };
+  // Asegurarse de que el valor predeterminado sea el correcto
+  if (colorMode.value === undefined) {
+    // Si no hay valor en `localStorage`, puedes configurarlo manualmente
+    // como 'light' o 'dark' según prefieras como predeterminado.
+    colorMode.value = 'light'; // Asegúrate de que esto sea el valor que quieres.
+  }
 
   const toggleTheme = () => {
-    isDarkMode.value = !isDarkMode.value;
-    localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light');
-    document.documentElement.classList[isDarkMode.value ? 'add' : 'remove']('dark');
+    colorMode.value = colorMode.value === 'dark' ? 'light' : 'dark';
   };
 
-  return {
-    isDarkMode,
-    toggleTheme,
-    initTheme,
-  };
-}
+  return { isDarkMode, toggleTheme };
+};

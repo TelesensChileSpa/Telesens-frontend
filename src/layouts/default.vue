@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useTheme } from '~/composables/useTheme';
 import Navbar from '~/components/Navbar.vue';
 import Footer from '~/components/Footer.vue';
 
-const { isDarkMode, initTheme } = useTheme();
-
-onMounted(() => {
-  initTheme();
-});
 </script>
 
 <template>
-  <div :class="{ 'bg-gray-900 text-white': isDarkMode, 'bg-[#f2f2f2] text-gray-900': !isDarkMode }"
-    class="min-h-screen flex flex-col transition-colors duration-300">
+  <div class="min-h-screen flex flex-col transition-colors duration-300 bg-[#f2f2f2] text-gray-900 dark:bg-gray-900 dark:text-white">
 
     <!-- Navbar -->
     <Navbar />

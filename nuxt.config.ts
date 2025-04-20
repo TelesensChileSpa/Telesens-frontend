@@ -5,7 +5,18 @@ export default defineNuxtConfig({
     enabled: process.env.NODE_ENV === 'development',
   },
 
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/color-mode'
+  ],
+
+  // Configuración del módulo color-mode
+  colorMode: {
+    preference: 'system', // 'light' | 'dark' | 'system'
+    fallback: 'light',
+    classSuffix: '',
+    storageKey: 'nuxt-color-mode'
+  },
 
   runtimeConfig: {
     secretKey: process.env.SECRET_KEY,
@@ -31,10 +42,10 @@ export default defineNuxtConfig({
       link: [
         {
           rel: 'icon',
-          href: '/favicon.ico',  // Ruta al favicon en public/
+          href: '/favicon.ico',
           type: 'image/x-icon',
         },
       ],
     },
   },
-});
+})
