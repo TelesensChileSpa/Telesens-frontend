@@ -9,13 +9,16 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode'
   ],
+  
+  css: ['~/assets/css/main.css'],
 
   // Configuración del módulo color-mode
   colorMode: {
-    preference: 'system', // 'light' | 'dark' | 'system'
+    preference: 'light', // 'light' | 'dark' | 'system'
     fallback: 'light',
     classSuffix: '',
-    storageKey: 'nuxt-color-mode'
+    storageKey: 'nuxt-color-mode',
+    storage: 'cookie'
   },
 
   runtimeConfig: {

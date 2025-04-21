@@ -20,10 +20,7 @@ const hexItems = ref([
 <template>
   <!-- Contenido principal -->
   <main class="flex-1 flex flex-col items-center justify-center px-4">
-    <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-[#4CAF50] dark:text-[#A5D6A7] text-center">
-      Bienvenido a Telesens
-    </h1>
-
+    
     <!-- Grid de hexágonos -->
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       <div v-for="(item, index) in hexItems" :key="index"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useLogin } from '~/composables/useLogin';
-import { useTheme } from '~/composables/useTheme';
-import { Sun, Moon, Eye, EyeOff, User, Lock, LogIn } from '~/composables/useIcons';
+import ButtonTheme from '~/components/ButtonTheme.vue'
+import { Eye, EyeOff, User, Lock, LogIn } from '~/composables/useIcons';
 import { vAutoAnimate } from '@formkit/auto-animate';
 
 definePageMeta({
@@ -17,22 +17,13 @@ const {
   handleLogin
 } = useLogin({ redirectTo: '/' });
 
-const { isDarkMode, toggleTheme } = useTheme();
 </script>
 
 <template>
   <div class="bg-[#f2f2f2] dark:bg-gray-900 flex flex-1 items-center justify-center relative w-full overflow-hidden">
 
     <!-- Botón para cambiar el tema -->
-    <button @click="toggleTheme"
-      class="absolute top-4 right-4 p-3 bg-gradient-to-r from-[#4CAF50] to-[#388E3C] text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none">
-      <span v-if="isDarkMode">
-        <Moon class="w-5 h-5" />
-      </span>
-      <span v-else>
-        <Sun class="w-5 h-5" />
-      </span>
-    </button>
+      <ButtonTheme class="absolute top-4 right-4 z-10" />
 
     <!-- Caja de login con animación -->
     <div ref="formRef" v-auto-animate
