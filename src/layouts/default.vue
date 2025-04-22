@@ -12,7 +12,7 @@ import Footer from '~/components/Footer.vue';
     </div>
 
     <!-- Contenido principal -->
-    <main class="flex-1 px-4 py-6">
+    <main class="flex-1 flex flex-col">
       <slot />
     </main>
 
