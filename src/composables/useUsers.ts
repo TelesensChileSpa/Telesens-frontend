@@ -25,6 +25,7 @@ export function useUsers() {
     try {
       const response = await $fetch<User[]>(`${API_URL}/users`, {
         headers: { Authorization: `Bearer ${token.value}` },
+        credentials: 'include',
       });
       users.value = response;
     } catch (err: any) {
