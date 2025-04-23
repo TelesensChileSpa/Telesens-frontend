@@ -9,7 +9,8 @@ export function useUsers() {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const { token, isAuthenticated } = useAuth();
-  const { public: { API_URL } } = useRuntimeConfig();
+  const { public: { apiBase } } = useRuntimeConfig();
+  const API_URL = `${apiBase}/api`;     // ruta REST
 
   const fetchUsers = async () => {
     if (!isAuthenticated.value || !token.value) {

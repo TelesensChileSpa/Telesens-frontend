@@ -5,7 +5,6 @@ import Footer from '~/components/Footer.vue';
 
 <template>
   <div class="min-h-screen flex flex-col transition-colors duration-300 bg-[#f2f2f2] text-gray-900 dark:bg-gray-900 dark:text-white">
-
     <!-- Navbar -->
     <div class="relative z-20">
       <Navbar />
@@ -13,7 +12,7 @@ import Footer from '~/components/Footer.vue';
 
     <!-- Contenido principal -->
     <main class="flex-1 flex flex-col">
-      <slot />
+      <slot />  <!-- Aquí se inserta el contenido de las páginas, como index.vue -->
     </main>
 
     <!-- Footer -->

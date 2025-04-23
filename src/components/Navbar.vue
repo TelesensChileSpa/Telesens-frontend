@@ -24,25 +24,24 @@ const handleLogout = () => {
     bg-gradient-to-r from-[#388E3C] to-[#1B5E20] backdrop-blur-lg bg-opacity-40 relative z-30">
 
     <!-- Logo a la izquierda -->
-    <!-- Logo a la izquierda -->
-<div class="flex items-center h-full">
-  <img 
-    src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp" 
-    alt="Logo" 
-    class="h-full max-h-full object-contain drop-shadow-md dark:hidden" />
-    
-  <img 
-    src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
-    alt="Logo"
-    class="h-full max-h-full object-contain drop-shadow-md hidden dark:block" />
-</div>
+    <div class="flex items-center h-full">
+      <img 
+        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp" 
+        alt="Logo" 
+        class="h-full max-h-full object-contain drop-shadow-md dark:hidden" />
+        
+      <img 
+        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
+        alt="Logo"
+        class="h-full max-h-full object-contain drop-shadow-md hidden dark:block" />
+    </div>
 
     <!-- Título centrado -->
     <div class="absolute left-1/2 transform -translate-x-1/2 
         text-white dark:text-black 
         font-poppins font-bold tracking-wide text-2xl 
         transition-colors duration-500 ease-in-out">
-        Telemetría Telesens Chile
+        Telesens Chile v1.0.0
     </div>
 
     <!-- Perfil y cambio de tema -->

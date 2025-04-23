@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import NotificationConnect from '~/components/NotificationConnect.vue';  // Importa el componente de notificación
 
 const hexItems = ref([
   { title: 'Inicio' },
@@ -15,6 +16,9 @@ const hexItems = ref([
 
 <template>
   <div class="flex-1 flex items-center justify-center px-4 py-6">
+    <!-- Componente de notificación -->
+    <NotificationConnect />  <!-- Aquí agregas el componente de notificación -->
+
     <!-- Grid de hexágonos -->
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
       <div v-for="(item, index) in hexItems" :key="index"

@@ -7,7 +7,8 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/color-mode'
+    '@nuxtjs/color-mode',
+    '@pinia/nuxt'
   ],
   
   css: ['~/assets/css/main.css'],
@@ -24,7 +25,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     secretKey: process.env.SECRET_KEY,
     public: {
-      API_URL: process.env.API_URL,
+      apiBase: process.env.API_BASE_URL,
     },
   },
 
