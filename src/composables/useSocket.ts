@@ -1,80 +1,80 @@
-// composables/useSockets.ts
 import { io, Socket } from 'socket.io-client'
-import { ref, onUnmounted, watch } from 'vue'
+import { ref } from 'vue'
 import { useRuntimeConfig } from '#app'
 import { useAuthStore } from '~/stores/auth'
+import type { ServerToClientEvents, ClientToServerEvents } from '~/interfaces/socket.user.interface'
 
-const socket = ref<Socket | null>(null)
+const socket = ref<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null)
 const isConnected = ref(false)
+const userId = ref<string | null>(null)
 
-export const useSocket = () => {
-    const auth = useAuthStore()
-    const { public: { apiBase } } = useRuntimeConfig()
+export function useSocket() {
+  const auth = useAuthStore()
+  const { public: { apiBase } } = useRuntimeConfig()
 
-    // Conectar al WebSocket con el token del usuario
-    const connect = (token: string) => {
-        if (!token) return
+  let isSocketConnected = false
 
-        // Evitar múltiples conexiones si ya está conectado
-        if (socket.value?.connected) return
+  // Función para conectar al socket
+  function connect(token: string) {
+    if (socket.value || !token || isSocketConnected) return
 
-        const newSocket = io(`${apiBase}/ws-auth`, {
-            transports: ['websocket'],
-            auth: { token },
-        })
+    socket.value = io(`${apiBase}/ws-auth`, {
+      transports: ['websocket'],
+      auth: { token },
+    })
 
-        newSocket.on('connect', () => {
-            isConnected.value = true
-            console.log('🟢 WebSocket conectado')
-        })
+    socket.value.on('userLoggedIn', (data) => {
+      // Asegurarse de que userId sea un string o null
+      userId.value = data.userId || null
+      isConnected.value = true
+      console.log(`Usuario conectado con ID: ${data.userId}`)
+    })
 
-        newSocket.on('disconnect', (reason) => {
-            isConnected.value = false
-            console.warn('🔴 WS desconectado:', reason)
-        })
+    socket.value.on('userLoggedOut', (data) => {
+      userId.value = null
+      isConnected.value = false
+      console.log(`Usuario desconectado con ID: ${data.userId}`)
+    })
 
-        newSocket.on('connect_error', (error) => {
-            isConnected.value = false
-            console.error('❌ WS Error:', error)
-        })
+    socket.value.on('connect_error', (err) => {
+      console.error('Error de conexión:', err)
+      isConnected.value = false
+      isSocketConnected = false
+    })
 
-        socket.value = newSocket
+    socket.value.on('disconnect', (reason) => {
+      console.warn('Desconectado:', reason)
+      isConnected.value = false
+      isSocketConnected = false
+    })
+
+    isSocketConnected = true
+  }
+
+  // Función para desconectar
+  function disconnect() {
+    if (!socket.value) return
+    socket.value.disconnect()
+    socket.value = null
+    isConnected.value = false
+    userId.value = null
+    isSocketConnected = false
+  }
+
+  // Conectar cuando el token esté listo (reactivo)
+  const token = auth.getToken()
+
+  // Verificación explícita de si token no es null y es un string
+  if (token && typeof token === 'string') {
+    connect(token)
+  }
+
+  // Reconectar cuando el usuario vuelva a estar online
+  window.addEventListener('online', () => {
+    if (token && typeof token === 'string' && !isConnected.value) {
+      connect(token)
     }
+  })
 
-    // Conexión automática cuando el token cambia
-    watch(
-        () => auth.token,
-        (newToken) => {
-            if (newToken) {
-                connect(newToken)
-            } else {
-                disconnect()  // Desconectar si no hay token
-            }
-        },
-        { immediate: true }
-    )
-
-    // Desconectar el socket
-    const disconnect = () => {
-        socket.value?.disconnect()
-        socket.value = null
-        isConnected.value = false
-    }
-
-    // Desconectar cuando el componente sea desmontado
-    onUnmounted(() => disconnect())
-
-    return {
-        socket,
-        isConnected,
-        emit: (...args: Parameters<Socket['emit']>) => {
-            if (!socket.value) throw new Error('Socket no inicializado')
-            socket.value.emit(...args)
-        },
-        on: (...args: Parameters<Socket['on']>) => {
-            if (!socket.value) throw new Error('Socket no inicializado')
-            socket.value.on(...args)
-        },
-        disconnect,
-    }
+  return { socket, isConnected, userId, disconnect }
 }

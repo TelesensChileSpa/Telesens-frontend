@@ -1,22 +1,37 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { vAutoAnimate } from '@formkit/auto-animate';
-import ButtonTheme from '~/components/ButtonTheme.vue';
-import { User, LogOut } from '~/composables/useIcons';
-import { useAuth } from '~/composables/useAuth';
+import { ref } from 'vue'
+import { vAutoAnimate } from '@formkit/auto-animate'
+import ButtonTheme from '~/components/ButtonTheme.vue'
+import { User, LogOut } from '~/composables/useIcons'
+import { useAuthStore } from '~/stores/auth'
+import { useSocket } from '~/composables/useSocket'
+import { useRouter } from 'vue-router'
 
-const { logout } = useAuth();
+// Desestructuramos logout del auth y disconnect del socket
+const { logout } = useAuthStore()
+const { disconnect: disconnectSocket } = useSocket()
+const router = useRouter()
 
-const showProfileMenu = ref(false);
+const showProfileMenu = ref(false)
+const toggleProfileMenu = () => { showProfileMenu.value = !showProfileMenu.value }
 
-const toggleProfileMenu = () => {
-  showProfileMenu.value = !showProfileMenu.value;
-};
+const handleLogout = async () => {
+  try {
+    // 1) Desconecta el canal de WebSocket
+    disconnectSocket()
 
-const handleLogout = () => {
-  logout();
-  showProfileMenu.value = false;
-};
+    // 2) Borra el token y redirige a la página de login
+    logout()
+
+    // 3) Redirige inmediatamente al login antes de cerrar el menú
+    await router.push('/login')
+
+    // 4) Cierra el menú de perfil
+    showProfileMenu.value = false
+  } catch (error) {
+    console.error('Error during logout:', error)
+  }
+}
 </script>
 
 <template>
@@ -34,14 +49,6 @@ const handleLogout = () => {
         src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
         alt="Logo"
         class="h-full max-h-full object-contain drop-shadow-md hidden dark:block" />
-    </div>
-
-    <!-- Título centrado -->
-    <div class="absolute left-1/2 transform -translate-x-1/2 
-        text-white dark:text-black 
-        font-poppins font-bold tracking-wide text-2xl 
-        transition-colors duration-500 ease-in-out">
-        Telesens Chile v1.0.0
     </div>
 
     <!-- Perfil y cambio de tema -->

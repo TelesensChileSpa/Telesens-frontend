@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { onMounted, computed, watch } from 'vue'
 import { useUsers } from '~/composables/useUsers'
-import { useAuth } from '~/composables/useAuth'
+import { useAuthStore } from '~/stores/auth'
 import { useRouter } from 'vue-router'
 
 const { users, fetchUsers, loading, error } = useUsers()
-const { isAuthenticated, logout } = useAuth()  // Ahora también extraemos logout
+const { isAuthenticated, logout } = useAuthStore()  // Ahora también extraemos logout
 const router = useRouter()
 
 // Computed para mantener la autenticación reactiva
-const isUserAuthenticated = computed(() => isAuthenticated.value)
+const isUserAuthenticated = computed(() => isAuthenticated)
 
 onMounted(() => {
   console.log('onMounted called')
