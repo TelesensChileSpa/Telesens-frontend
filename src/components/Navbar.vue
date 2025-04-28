@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { vAutoAnimate } from '@formkit/auto-animate'
 import ButtonTheme from '~/components/ButtonTheme.vue'
 import { User, LogOut } from '~/composables/useIcons'
@@ -15,21 +15,24 @@ const router = useRouter()
 const showProfileMenu = ref(false)
 const toggleProfileMenu = () => { showProfileMenu.value = !showProfileMenu.value }
 
+// Verifica si estamos en el cliente para ejecutar el código de logout
 const handleLogout = async () => {
-  try {
-    // 1) Desconecta el canal de WebSocket
-    disconnectSocket()
+  if (process.client) {
+    try {
+      // 1) Desconecta el canal de WebSocket
+      disconnectSocket()
 
-    // 2) Borra el token y redirige a la página de login
-    logout()
+      // 2) Borra el token y redirige a la página de login
+      logout()
 
-    // 3) Redirige inmediatamente al login antes de cerrar el menú
-    await router.push('/login')
+      // 3) Redirige inmediatamente al login antes de cerrar el menú
+      await router.push('/login')
 
-    // 4) Cierra el menú de perfil
-    showProfileMenu.value = false
-  } catch (error) {
-    console.error('Error during logout:', error)
+      // 4) Cierra el menú de perfil
+      showProfileMenu.value = false
+    } catch (error) {
+      console.error('Error during logout:', error)
+    }
   }
 }
 </script>

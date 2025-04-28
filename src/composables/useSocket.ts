@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRuntimeConfig } from '#app'
 import { useAuthStore } from '~/stores/auth'
 import type { ServerToClientEvents, ClientToServerEvents } from '~/interfaces/socket.user.interface'
@@ -69,12 +69,15 @@ export function useSocket() {
     connect(token)
   }
 
-  // Reconectar cuando el usuario vuelva a estar online
-  window.addEventListener('online', () => {
-    if (token && typeof token === 'string' && !isConnected.value) {
-      connect(token)
-    }
-  })
+  // Asegúrate de que este código solo se ejecute en el cliente
+  if (process.client) {
+    // Reconectar cuando el usuario vuelva a estar online
+    window.addEventListener('online', () => {
+      if (token && typeof token === 'string' && !isConnected.value) {
+        connect(token)
+      }
+    })
+  }
 
   return { socket, isConnected, userId, disconnect }
 }
