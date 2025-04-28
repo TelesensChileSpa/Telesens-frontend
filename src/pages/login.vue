@@ -34,12 +34,12 @@ const {
       <div class="flex justify-center mb-4">
         <!-- Logo claro (visible solo en modo claro) -->
         <img
-          src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1743803502/icon_rjjvfl.png"
+          src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp"
           alt="Logo Claro" class="h-36 w-auto block dark:hidden" />
 
         <!-- Logo oscuro (visible solo en modo oscuro) -->
         <img
-          src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1743895141/Logo_Blanco_Sin_Sub_riptvs.png"
+          src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp"
           alt="Logo Oscuro" class="h-36 w-auto hidden dark:block" />
       </div>
 
