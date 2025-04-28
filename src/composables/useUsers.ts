@@ -1,19 +1,25 @@
 import { ref, watchEffect } from 'vue';
 import type { User } from '~/interfaces/user.interface';
+import { useAuthStore } from '~/stores/auth'; // Importa el store de auth
 import { useRuntimeConfig } from '#app';
-import { useAuth } from '~/composables/useAuth';
 import { navigateTo } from '#app';
 
 export function useUsers() {
   const users = ref<User[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
-  const { token, isAuthenticated } = useAuth();
+
+  // Usamos el store de auth
+  const authStore = useAuthStore();
+  const token = authStore.token; // El token sigue siendo un ref, así que lo dejamos como está
+  const isAuthenticated = authStore.isAuthenticated; // isAuthenticated es un computed, no necesitas .value aquí
+
   const { public: { apiBase } } = useRuntimeConfig();
   const API_URL = `${apiBase}/api`;     // ruta REST
 
   const fetchUsers = async () => {
-    if (!isAuthenticated.value || !token.value) {
+    // Comprobar si el token es null y si el usuario está autenticado
+    if (!isAuthenticated || !token) {
       console.log('Usuario no autenticado, redirigiendo a login...');
       navigateTo('/login', { replace: true });
       return;
@@ -24,7 +30,7 @@ export function useUsers() {
 
     try {
       const response = await $fetch<User[]>(`${API_URL}/users`, {
-        headers: { Authorization: `Bearer ${token.value}` },
+        headers: { Authorization: `Bearer ${token}` },
         credentials: 'include',
       });
       users.value = response;
@@ -43,7 +49,8 @@ export function useUsers() {
 
   // Ejecutar la verificación y redirección al cargar el composable
   watchEffect(() => {
-    if (!isAuthenticated.value || !token.value) {
+    // Comprobar si el token es null y si el usuario está autenticado
+    if (!isAuthenticated || !token) {
       console.log('No autenticado, redirigiendo inmediatamente...');
       navigateTo('/login', { replace: true });
     }

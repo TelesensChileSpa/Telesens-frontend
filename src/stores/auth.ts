@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useCookie, useRuntimeConfig, navigateTo } from '#app'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 export const useAuthStore = defineStore('auth', () => {
   const config = useRuntimeConfig()
@@ -10,10 +10,17 @@ export const useAuthStore = defineStore('auth', () => {
   })
 
   // Usamos ref para token, lo que permite la reactividad
-  const token = ref<string | null>(cookie.value)
-  
+  const token = ref<string | null>(null)
+
   // Computed para verificar si el usuario está autenticado
   const isAuthenticated = computed(() => !!token.value)
+
+  // Inicializar el token, asegurándonos de que solo se ejecute en el cliente
+  onMounted(() => {
+    if (process.client) {
+      token.value = cookie.value
+    }
+  })
 
   // Función para manejar el login
   async function login(creds: { usuario: string; contraseña: string }) {
@@ -30,13 +37,8 @@ export const useAuthStore = defineStore('auth', () => {
   function logout() {
     token.value = null
     cookie.value = null
-    navigateTo('/login')
-  }
-
-  // Inicialización, se puede usar el token almacenado en las cookies
-  function initAuth() {
-    if (cookie.value) {
-      token.value = cookie.value
+    if (process.client) {
+      navigateTo('/login')
     }
   }
 
@@ -50,7 +52,6 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     login,
     logout,
-    initAuth,
     getToken,  // Agregado el getter
   }
 })
