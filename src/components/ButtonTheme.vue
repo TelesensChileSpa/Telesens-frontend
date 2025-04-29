@@ -4,17 +4,20 @@ import { useTheme } from '~/composables/useTheme'
 import { Sun, Moon } from '~/composables/useIcons'
 
 const { isDarkMode, toggleTheme } = useTheme()
-const icon = computed(() => isDarkMode.value ? Moon : Sun)
-
 const mounted = ref(false)
 
 onMounted(() => {
   mounted.value = true
 })
+
+// Elegimos el icono actual (Sol o Luna)
+const icon = computed(() => isDarkMode.value ? Moon : Sun)
+
+// Definimos dinámicamente el color del icono
+const iconColorClass = computed(() => isDarkMode.value ? 'text-white' : 'text-black')
 </script>
 
 <template>
-  <!-- Botón de cambio de tema sin posicionamiento absoluto -->
   <button
     @click="toggleTheme"
     aria-label="Cambiar tema"
@@ -25,6 +28,7 @@ onMounted(() => {
       v-if="mounted"
       :is="icon"
       class="w-5 h-5 transition-all duration-500"
+      :class="iconColorClass"
     />
   </button>
 </template>

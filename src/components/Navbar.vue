@@ -39,17 +39,18 @@ const handleLogout = async () => {
 
 <template>
   <nav class="w-full h-16 px-6 flex items-center justify-between shadow-sm transition-colors duration-300 
-    bg-gradient-to-r from-[#388E3C] to-[#1B5E20] backdrop-blur-lg bg-opacity-40 relative z-30">
-
+    bg-gradient-to-r from-[#388E3C] to-[#1B5E20] backdrop-blur-lg bg-opacity-40 relative z-30 
+    border-b-2 border-[#4CAF50]">
+    
     <!-- Logo a la izquierda -->
     <div class="flex items-center h-full">
       <img 
-        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp" 
+        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
         alt="Logo" 
         class="h-full max-h-full object-contain drop-shadow-md dark:hidden" />
         
       <img 
-        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
+        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp" 
         alt="Logo"
         class="h-full max-h-full object-contain drop-shadow-md hidden dark:block" />
     </div>
@@ -59,7 +60,7 @@ const handleLogout = async () => {
       <div class="relative" v-auto-animate>
         <!-- Botón perfil -->
         <button @click="toggleProfileMenu"
-                class="p-2 rounded-full text-white dark:text-black hover:bg-[#388E3C]/20 transition duration-300 ease-in-out"
+                class="p-2 rounded-full text-black dark:text-white hover:bg-[#388E3C]/20 transition duration-300 ease-in-out"
                 title="Perfil">
           <User class="w-5 h-5" />
         </button>

@@ -1,15 +1,18 @@
 module.exports = {
-    darkMode: 'class',
-    content: [
-      './components/**/*.{vue,js,ts}',
-      './layouts/**/*.vue',
-      './pages/**/*.vue',
-      './plugins/**/*.{js,ts}',
-      './app.vue',
-    ],
-    theme: {
-      extend: {},
+  darkMode: 'class',
+  content: [
+    './components/**/*.{vue,js,ts}',
+    './layouts/**/*.vue',
+    './pages/**/*.vue',
+    './plugins/**/*.{js,ts}',
+    './app.vue',
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
     },
-    plugins: [],
-  };
-  
+  },
+  plugins: [],
+};
