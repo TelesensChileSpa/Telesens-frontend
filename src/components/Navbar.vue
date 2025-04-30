@@ -63,16 +63,18 @@ onMounted(() => {
     <!-- Componente de notificación -->
     <NotificationConnect />  <!-- Aquí agregas el componente de notificación -->
 
-    <!-- Logo -->
+    <!-- Logo con enlace a la página de inicio -->
     <div class="flex items-center h-full">
-      <img 
-        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
-        alt="Logo" 
-        class="h-full object-contain drop-shadow-md dark:hidden" />
-      <img 
-        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp" 
-        alt="Logo"
-        class="h-full object-contain drop-shadow-md hidden dark:block" />
+      <router-link to="/" class="flex items-center h-full">
+        <img 
+          src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
+          alt="Logo" 
+          class="h-full object-contain drop-shadow-md dark:hidden" />
+        <img 
+          src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp" 
+          alt="Logo"
+          class="h-full object-contain drop-shadow-md hidden dark:block" />
+      </router-link>
     </div>
 
     <!-- Perfil y cambio de tema -->
