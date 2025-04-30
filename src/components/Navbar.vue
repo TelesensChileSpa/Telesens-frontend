@@ -60,6 +60,9 @@ onMounted(() => {
   [background:linear-gradient(to_right,rgba(56,142,60,0.2),rgba(27,94,32,0.2))] backdrop-blur-lg relative z-30 
   border-b-2 border-[#4CAF50] animate-line-fade">
 
+    <!-- Componente de notificación -->
+    <NotificationConnect />  <!-- Aquí agregas el componente de notificación -->
+
     <!-- Logo -->
     <div class="flex items-center h-full">
       <img 
