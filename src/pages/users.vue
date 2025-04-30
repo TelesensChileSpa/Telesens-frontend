@@ -45,7 +45,7 @@ watch(error, (newError) => {
         {{ error }}
       </div>
 
-      <div v-else class="overflow-x-auto">
+      <div v-else class="overflow-x-auto w-full">
         <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <thead class="bg-gray-50 dark:bg-gray-700">
             <tr>
