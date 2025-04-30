@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Home, User, BarChart, FileText, Bell, Settings, LifeBuoy, Mail } from 'lucide-vue-next';
 
@@ -18,11 +18,6 @@ const hexItems = ref([
   { title: 'CONTACTO', icon: Mail, path: '/contacto' }
 ]);
 
-// Computed para dividir en dos filas
-const half = computed(() => Math.ceil(hexItems.value.length / 2));
-const topRow = computed(() => hexItems.value.slice(0, half.value));
-const bottomRow = computed(() => hexItems.value.slice(half.value));
-
 // Función para navegar al hacer click
 const navigate = (path: string) => {
   router.push(path);
@@ -40,7 +35,7 @@ const navigate = (path: string) => {
         class="cursor-pointer relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 flex flex-col items-center justify-center rounded-md text-xs font-medium shadow-md
                transition-all duration-300 transform hover:scale-105
                bg-gradient-to-r dark:bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-700 
-               hover:from-[#4CAF50] hover:to-[#388E3C] hover:bg-opacity-50 dark:hover:from-[#66BB6A] dark:hover:to-[#388E3C] dark:hover:bg-opacity-50"
+               hover:from-[#4CAF50] hover:to-[#388E3C] hover:bg-opacity-50 dark:hover:from-[#4CAF50] dark:hover:to-[#388E3C] dark:hover:bg-opacity-50"
         style="clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);"
       >
         <component :is="item.icon" class="w-8 h-8 mb-2 text-black dark:text-white" />

@@ -1,91 +1,155 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { vAutoAnimate } from '@formkit/auto-animate'
-import ButtonTheme from '~/components/ButtonTheme.vue'
-import { User, LogOut } from '~/composables/useIcons'
+import { User, LogOut, Sun, Moon, AlertTriangle } from '~/composables/useIcons'
 import { useAuthStore } from '~/stores/auth'
 import { useSocket } from '~/composables/useSocket'
-import { useRouter } from 'vue-router'
+import { useTheme } from '~/composables/useTheme'
 
-// Desestructuramos logout del auth y disconnect del socket
+// Auth y navegación
 const { logout } = useAuthStore()
 const { disconnect: disconnectSocket } = useSocket()
 const router = useRouter()
 
 const showProfileMenu = ref(false)
-const toggleProfileMenu = () => { showProfileMenu.value = !showProfileMenu.value }
+const showLogoutModal = ref(false)
+const mounted = ref(false)
 
-// Verifica si estamos en el cliente para ejecutar el código de logout
+// Perfil
+const toggleProfileMenu = (event: MouseEvent) => {
+  event.stopPropagation()
+  showProfileMenu.value = !showProfileMenu.value
+}
+
+// Logout
+const handleLogoutClick = () => {
+  showLogoutModal.value = true
+}
 const handleLogout = async () => {
-  if (process.client) {
-    try {
-      // 1) Desconecta el canal de WebSocket
-      disconnectSocket()
-
-      // 2) Borra el token y redirige a la página de login
-      logout()
-
-      // 3) Redirige inmediatamente al login antes de cerrar el menú
-      await router.push('/login')
-
-      // 4) Cierra el menú de perfil
-      showProfileMenu.value = false
-    } catch (error) {
-      console.error('Error during logout:', error)
-    }
+  try {
+    disconnectSocket()
+    logout()
+    await router.push('/login')
+    showLogoutModal.value = false
+    showProfileMenu.value = false
+  } catch (error) {
+    console.error('Error during logout:', error)
   }
 }
+const cancelLogout = () => {
+  showLogoutModal.value = false
+}
+
+// Tema
+const { isDarkMode, toggleTheme } = useTheme()
+const icon = computed(() => isDarkMode.value ? Moon : Sun)
+const iconColorClass = computed(() => isDarkMode.value ? 'text-white' : 'text-black')
+
+// Listeners globales
+onMounted(() => {
+  mounted.value = true
+  document.addEventListener('click', () => {
+    showProfileMenu.value = false
+  })
+})
 </script>
 
 <template>
   <nav class="w-full h-16 px-6 flex items-center justify-between shadow-sm transition-colors duration-300 
   [background:linear-gradient(to_right,rgba(56,142,60,0.2),rgba(27,94,32,0.2))] backdrop-blur-lg relative z-30 
   border-b-2 border-[#4CAF50] animate-line-fade">
-  
-  <!-- Logo a la izquierda -->
-  <div class="flex items-center h-full">
-    <img 
-      src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
-      alt="Logo" 
-      class="h-full max-h-full object-contain drop-shadow-md dark:hidden" />
-    
-    <img 
-      src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp" 
-      alt="Logo"
-      class="h-full max-h-full object-contain drop-shadow-md hidden dark:block" />
-  </div>
 
-  <!-- Perfil y cambio de tema -->
-  <div class="flex items-center space-x-4 ml-auto">
-    <div class="relative" v-auto-animate>
-      <!-- Botón perfil -->
-      <button @click="toggleProfileMenu"
-              class="p-2 rounded-full text-black dark:text-white hover:bg-[#388E3C]/20 transition duration-300 ease-in-out"
-              title="Perfil">
-        <User class="w-5 h-5" />
-      </button>
-
-      <!-- Menú desplegable -->
-      <div v-if="showProfileMenu"
-           class="absolute top-10 -left-40 w-48 bg-white text-black dark:bg-gray-800 dark:text-white rounded-lg shadow-lg z-50 transition-colors duration-300">
-        <ul class="space-y-2 py-2">
-          <li>
-            <a href="/perfil"
-               class="block px-4 py-2 text-sm hover:bg-[#388E3C] hover:text-white transition">Perfil</a>
-          </li>
-          <li>
-            <button @click="handleLogout"
-                    class="block w-full text-left px-4 py-2 text-sm hover:bg-[#388E3C] hover:text-white transition">
-              <LogOut class="w-5 h-5 inline-block mr-2" /> Cerrar sesión
-            </button>
-          </li>
-        </ul>
-      </div>
+    <!-- Logo -->
+    <div class="flex items-center h-full">
+      <img 
+        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1744161514/icono_web_wxpf7m.webp" 
+        alt="Logo" 
+        class="h-full object-contain drop-shadow-md dark:hidden" />
+      <img 
+        src="https://res.cloudinary.com/dobkjiqyn/image/upload/v1745279295/WAWAW_Mesa_de_trabajo_1_dg5svu.webp" 
+        alt="Logo"
+        class="h-full object-contain drop-shadow-md hidden dark:block" />
     </div>
 
-    <!-- Botón de cambio de tema -->
-    <ButtonTheme />
-  </div>
-</nav>
+    <!-- Perfil y cambio de tema -->
+    <div class="flex items-center space-x-4 ml-auto">
+      
+      <!-- Tema -->
+      <div class="relative" v-auto-animate>
+        <button
+          v-if="mounted"
+          @click="toggleTheme"
+          aria-label="Cambiar tema"
+          class="p-2 rounded-full hover:bg-[#388E3C]/20 transition"
+        >
+          <component :is="icon" class="w-5 h-5" :class="iconColorClass" />
+        </button>
+      </div>
 
+      <!-- Menú de perfil -->
+      <div class="relative" v-auto-animate>
+        <button @click="toggleProfileMenu"
+                class="p-2 rounded-full hover:bg-[#388E3C]/20 text-black dark:text-white transition"
+                title="Perfil">
+          <User class="w-5 h-5" />
+        </button>
+        <div v-if="showProfileMenu"
+             class="absolute top-10 -left-40 w-48 bg-white text-black dark:bg-gray-800 dark:text-white rounded-lg shadow-lg z-50">
+          <ul class="space-y-2 py-2">
+            <li>
+              <a href="/perfil"
+                 class="block px-4 py-2 text-sm hover:bg-[#388E3C] hover:text-white transition">Perfil</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <button @click="handleLogoutClick"
+              class="p-2 rounded-full hover:bg-[#388E3C]/20 transition">
+          <LogOut class="w-5 h-5" />
+      </button>
+    </div>
+  </nav>
+
+  <!-- Modal logout -->
+  <Transition
+    enter-active-class="transition-opacity duration-300 ease-out"
+    enter-from-class="opacity-0"
+    enter-to-class="opacity-100"
+    leave-active-class="transition-opacity duration-200 ease-in"
+    leave-from-class="opacity-100"
+    leave-to-class="opacity-0"
+  >
+    <div
+      v-if="showLogoutModal"
+      class="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50"
+      @click.self="cancelLogout"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 text-black dark:text-white p-6 rounded-lg shadow-lg w-96 transition"
+        @click.stop
+      >
+        <div class="flex items-center space-x-2">
+          <AlertTriangle class="w-6 h-6 text-yellow-500" />
+          <h3 class="text-lg font-semibold">¡Atención! ¿Estás seguro de que deseas cerrar sesión?</h3>
+        </div>
+        <div class="mt-4 flex justify-between space-x-4">
+          <button
+            @click="handleLogout"
+            class="w-full bg-green-600 text-white rounded-lg py-2 hover:bg-green-700 transition"
+          >
+            Sí, cerrar sesión
+          </button>
+          <button
+            @click="cancelLogout"
+            class="w-full bg-gray-400 text-white rounded-lg py-2 hover:bg-gray-500 transition"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </Transition>
 </template>
