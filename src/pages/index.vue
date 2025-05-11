@@ -18,16 +18,16 @@ const router = useRouter();
 
 // Íconos y paths corregidos
 const hexItems = ref([
-  { title: 'RESUMEN', icon: Home, path: '/resumen' },
-  { title: 'DASHBOARDS', icon: LayoutDashboard, path: '/dashboards' },
-  { title: 'REPORTES', icon: FileBarChart2, path: '/reportes' },
-  { title: 'DISPOSITIVOS', icon: Server, path: '/dispositivos' },
-  { title: 'ALERTAS\nY EVENTOS', icon: AlarmClock, path: '/alertas' },
-  { title: 'HISTORIAL\nDE DATOS', icon: History, path: '/historial' },
-  { title: 'USUARIOS\nY PERMISOS', icon: Users, path: '/users' },
-  { title: 'MANTENIMIENTO Y\nCONTROL EQUIPOS', icon: Wrench, path: '/mantenimiento' },
-  { title: 'CONFIGURACIÓN', icon: Settings, path: '/configuracion' },
-  { title: 'SOPORTE', icon: HelpCircle, path: '/soporte' }
+  { title: 'RESUMEN', icon: Home, path: '/menu/resumen' },
+  { title: 'DASHBOARDS', icon: LayoutDashboard, path: '/menu/dashboards' },
+  { title: 'REPORTES', icon: FileBarChart2, path: '/menu/reportes' },
+  { title: 'DISPOSITIVOS', icon: Server, path: '/menu/dispositivos' },
+  { title: 'ALERTAS\nY EVENTOS', icon: AlarmClock, path: '/menu/alertas' },
+  { title: 'HISTORIAL\nDE DATOS', icon: History, path: '/menu/historial' },
+  { title: 'USUARIOS\nY PERMISOS', icon: Users, path: '/menu/users' },
+  { title: 'MANTENIMIENTO Y\nCONTROL EQUIPOS', icon: Wrench, path: '/menu/mantenimiento' },
+  { title: 'CONFIGURACIÓN', icon: Settings, path: '/menu/configuracion' },
+  { title: 'SOPORTE', icon: HelpCircle, path: '/menu/soporte' }
 ]);
 
 const navigate = (path: string) => {

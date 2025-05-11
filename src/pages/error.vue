@@ -1,4 +1,3 @@
-<!-- src/pages/error.vue -->
 <script setup lang="ts">
 </script>
 

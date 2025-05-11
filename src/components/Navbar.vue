@@ -100,7 +100,7 @@ onMounted(() => {
           <User class="w-5 h-5" />
         </button>
         <div v-if="showProfileMenu"
-             class="absolute top-10 -left-40 w-48 bg-white text-black dark:bg-gray-800 dark:text-white rounded-lg shadow-lg z-50">
+             class="absolute top-10 right-0 w-48 bg-white text-black dark:bg-gray-800 dark:text-white rounded-lg shadow-lg z-50">
           <ul class="space-y-2 py-2">
             <li>
               <a href="/perfil"

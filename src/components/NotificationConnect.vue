@@ -27,7 +27,7 @@ onUnmounted(() => {
     class="fixed top-20 left-1/2 transform -translate-x-1/2 p-4 rounded-lg shadow-lg z-50 bg-green-100 transition-opacity duration-300"
   >
     <p class="text-green-600 font-medium">
-      ¡Conectado correctamente! Bienvenido, {{ userId }}
+      ¡Conectado correctamente! Bienvenido {{ userId }}
     </p>
   </div>
 </template>
