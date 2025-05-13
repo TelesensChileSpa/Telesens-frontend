@@ -103,7 +103,7 @@ onMounted(() => {
              class="absolute top-10 right-0 w-48 bg-white text-black dark:bg-gray-800 dark:text-white rounded-lg shadow-lg z-50">
           <ul class="space-y-2 py-2">
             <li>
-              <a href="/perfil"
+              <a href="../perfil"
                  class="block px-4 py-2 text-sm hover:bg-[#388E3C] hover:text-white transition">Perfil</a>
             </li>
           </ul>
