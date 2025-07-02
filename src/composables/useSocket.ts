@@ -7,12 +7,11 @@ import type { ServerToClientEvents, ClientToServerEvents } from '~/interfaces/so
 const socket = ref<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null)
 const isConnected = ref(false)
 const userId = ref<string | null>(null)
+let isSocketConnected = false
 
 export function useSocket() {
   const auth = useAuthStore()
   const { public: { apiBase } } = useRuntimeConfig()
-
-  let isSocketConnected = false
 
   // Función para conectar al socket
   function connect(token: string) {
@@ -24,16 +23,15 @@ export function useSocket() {
     })
 
     socket.value.on('userLoggedIn', (data) => {
-      // Asegurarse de que userId sea un string o null
       userId.value = data.userId || null
       isConnected.value = true
-      console.log(`Usuario conectado con ID: ${data.userId}`)
+      console.log(`Usuario ${data.userId} conectado correctamente`)
     })
 
     socket.value.on('userLoggedOut', (data) => {
       userId.value = null
       isConnected.value = false
-      console.log(`Usuario desconectado con ID: ${data.userId}`)
+      console.log(`🚪 Usuario desconectado vía socket: ${data.userId}`)
     })
 
     socket.value.on('connect_error', (err) => {
@@ -43,7 +41,7 @@ export function useSocket() {
     })
 
     socket.value.on('disconnect', (reason) => {
-      console.warn('Desconectado:', reason)
+      console.warn('Socket desconectado:', reason)
       isConnected.value = false
       isSocketConnected = false
     })
@@ -51,7 +49,7 @@ export function useSocket() {
     isSocketConnected = true
   }
 
-  // Función para desconectar
+  // Función para desconectar el socket
   function disconnect() {
     if (!socket.value) return
     socket.value.disconnect()
@@ -61,23 +59,28 @@ export function useSocket() {
     isSocketConnected = false
   }
 
-  // Conectar cuando el token esté listo (reactivo)
-  const token = auth.getToken()
+  // Conexión automática cuando se monta el componente
+  onMounted(() => {
+    const token = auth.getToken()
 
-  // Verificación explícita de si token no es null y es un string
-  if (token && typeof token === 'string') {
-    connect(token)
-  }
+    if (token && typeof token === 'string') {
+      connect(token)
+    }
 
-  // Asegúrate de que este código solo se ejecute en el cliente
-  if (process.client) {
-    // Reconectar cuando el usuario vuelva a estar online
+    // Reconexión al volver a estar online
     window.addEventListener('online', () => {
-      if (token && typeof token === 'string' && !isConnected.value) {
-        connect(token)
+      const latestToken = auth.getToken()
+      if (latestToken && typeof latestToken === 'string' && !isConnected.value) {
+        connect(latestToken)
       }
     })
-  }
+  })
 
-  return { socket, isConnected, userId, disconnect }
+  return {
+    socket,
+    isConnected,
+    userId,
+    connect,
+    disconnect,
+  }
 }

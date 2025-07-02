@@ -19,6 +19,12 @@ export const useAuthStore = defineStore('auth', () => {
   onMounted(() => {
     if (process.client) {
       token.value = cookie.value
+
+      // ✅ Nueva línea para reconectar socket después de recargar
+      if (token.value) {
+        const { connect } = useSocket()
+        connect(token.value)
+      }
     }
   })
 
