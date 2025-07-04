@@ -14,6 +14,10 @@ import {
   HelpCircle,
 } from 'lucide-vue-next';
 
+definePageMeta({
+  layout: 'menu',
+});
+
 const router = useRouter();
 
 // Íconos y paths corregidos
