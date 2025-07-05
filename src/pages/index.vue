@@ -14,9 +14,9 @@ import {
   HelpCircle,
 } from 'lucide-vue-next';
 
-definePageMeta({
-  layout: 'menu',
-});
+// definePageMeta({
+//   layout: 'menu',
+// });
 
 const router = useRouter();
 
