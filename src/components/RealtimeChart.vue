@@ -36,12 +36,12 @@ ChartJS.register(
 )
 
 const props = defineProps<{
-  dispositivoId: string
+  plantaCodigo: string
   variable: string
   unidad: string
 }>()
 
-const { chartData } = useRealtimeChart(props.dispositivoId, props.variable)
+const { chartData } = useRealtimeChart(props.plantaCodigo, props.variable)
 
 // Definimos el tipo para los datos con x numérico (timestamp)
 type DataPoint = { x: number; y: number }

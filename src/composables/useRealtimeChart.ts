@@ -2,7 +2,7 @@ import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useSocket } from './useSocket'
 
 interface DataPoint {
-  x: string  // ISO string de fecha, ej: "2025-07-07T06:53:00.000Z"
+  x: number
   y: number
 }
 
@@ -13,19 +13,20 @@ export function useRealtimeChart(plantaCodigo: string, variableCodigo: string) {
 
   const handler = (data: any) => {
     console.log('Dato recibido en handler:', data)
+    console.log('Esperado:', plantaCodigo, variableCodigo)
 
     //if (data.plantaCodigo === plantaCodigo && data.variableCodigo === variableCodigo) {
       const punto: DataPoint = {
-        x: data.creado,
+        x: new Date(data.creado).getTime(),
         y: parseFloat(data.value),
       }
       chartData.value.push(punto)
-      if (chartData.value.length > maxPoints) {
+      if (chartData.value.length > 30) {
         chartData.value.shift()
       }
       console.log('📈 Dato agregado al gráfico:', punto)
     //} else {
-      //console.log('Dato filtrado (no coincide planta o variable):', data)
+      //console.log('❌ Dato ignorado')
     //}
   }
 
