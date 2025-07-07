@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 import {
   Chart as ChartJS,
   Title,
@@ -10,8 +10,9 @@ import {
   PointElement,
   CategoryScale,
   LinearScale,
-} from 'chart.js';
-import { Line, Bar } from 'vue-chartjs';
+} from 'chart.js'
+import type { ChartData } from 'chart.js'
+import { Line, Bar } from 'vue-chartjs'
 
 ChartJS.register(
   Title,
@@ -22,32 +23,24 @@ ChartJS.register(
   PointElement,
   CategoryScale,
   LinearScale
-);
+)
 
-const lineChartData = ref({
-  labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
-  datasets: [
-    {
-      label: 'Temperatura (°C)',
-      data: [18, 18.4, 18.7, 19.1, 18.8, 18.5],
-      borderColor: '#4CAF50',
-      backgroundColor: 'rgba(76, 175, 80, 0.3)',
-      fill: true,
-      tension: 0.4,
-    },
-  ],
-});
+// Interfaz para datos reales
+interface DataEntity {
+  createdAt: string
+  value: string
+  variable: string
+}
 
-const barChartData = ref({
-  labels: ['Sensor A', 'Sensor B', 'Sensor C'],
-  datasets: [
-    {
-      label: 'Humedad (%)',
-      data: [60, 72, 55],
-      backgroundColor: ['#60A5FA', '#3B82F6', '#2563EB'],
-    },
-  ],
-});
+const lineChartData = ref<ChartData<'line'>>({
+  labels: [],
+  datasets: [],
+})
+
+const barChartData = ref<ChartData<'bar'>>({
+  labels: [],
+  datasets: [],
+})
 
 const chartOptions = ref({
   responsive: true,
@@ -59,7 +52,79 @@ const chartOptions = ref({
       beginAtZero: true,
     },
   },
-});
+})
+
+const fetchData = async () => {
+  const dispositivoId = '67db472923c111caca57aff9'
+  const variable = 'dg9o4blo8XmYfHCD8UVc'
+  const since = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString()
+
+  const { data, error } = await useFetch<DataEntity[]>('/api/datas/filtered', {
+    params: {
+      dispositivoId,
+      variable,
+      since,
+    },
+  })
+
+  if (error.value) {
+    console.error('❌ Error al obtener datos:', error.value)
+    return
+  }
+
+  const datos = data.value || []
+
+  const labels = datos.map((d) =>
+    new Date(d.createdAt).toLocaleTimeString('es-CL', {
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  )
+  const values = datos.map((d) => parseFloat(d.value))
+
+  lineChartData.value = {
+    labels,
+    datasets: [
+      {
+        label: 'Temperatura (°C)',
+        data: values,
+        borderColor: '#4CAF50',
+        backgroundColor: 'rgba(76, 175, 80, 0.3)',
+        fill: true,
+        tension: 0.4,
+      },
+    ],
+  }
+
+  const sensorAgrupado: Record<string, number[]> = {}
+  for (const item of datos) {
+    const sensor = item.variable || 'Desconocido'
+    if (!sensorAgrupado[sensor]) sensorAgrupado[sensor] = []
+    sensorAgrupado[sensor].push(parseFloat(item.value))
+  }
+
+  const barLabels = Object.keys(sensorAgrupado)
+  const barValues = barLabels.map((k) =>
+    Math.round(
+      sensorAgrupado[k].reduce((a, b) => a + b, 0) / sensorAgrupado[k].length
+    )
+  )
+
+  barChartData.value = {
+    labels: barLabels,
+    datasets: [
+      {
+        label: 'Promedio por Sensor',
+        data: barValues,
+        backgroundColor: ['#60A5FA', '#3B82F6', '#2563EB'],
+      },
+    ],
+  }
+}
+
+onMounted(() => {
+  fetchData()
+})
 </script>
 
 <template>

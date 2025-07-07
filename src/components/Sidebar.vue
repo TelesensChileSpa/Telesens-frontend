@@ -66,7 +66,7 @@ const menuItems = [
     name: 'Documentos',
     icon: FileText,
     path: '/documentos',
-    badge: 3
+    badge: null
   },
   {
     name: 'Calendario',
@@ -78,13 +78,13 @@ const menuItems = [
     name: 'Mensajes',
     icon: MessageSquare,
     path: '/mensajes',
-    badge: 12
+    badge: null
   },
   {
     name: 'Notificaciones',
     icon: Bell,
     path: '/notificaciones',
-    badge: 5
+    badge: null
   },
   {
     name: 'Configuración',

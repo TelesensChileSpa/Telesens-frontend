@@ -13,13 +13,34 @@ export function useSocket() {
   const auth = useAuthStore()
   const { public: { apiBase } } = useRuntimeConfig()
 
-  // Función para conectar al socket
+  // Escucha nuevos eventos de datos en tiempo real
+  type NewDataListener = (data: any) => void
+  const newDataListeners = new Set<NewDataListener>()
+
+  function onNewData(listener: NewDataListener) {
+    newDataListeners.add(listener)
+  }
+
+  function offNewData(listener: NewDataListener) {
+    newDataListeners.delete(listener)
+  }
+
+  // Conectarse al socket con token
   function connect(token: string) {
     if (socket.value || !token || isSocketConnected) return
 
     socket.value = io(`${apiBase}/ws-auth`, {
       transports: ['websocket'],
       auth: { token },
+    })
+
+    socket.value.on('connect', () => {
+      console.log('Socket conectado con ID:', socket.value?.id)
+    })
+
+    socket.value.on('new-data', (data) => {
+      console.log('Evento new-data recibido en socket:', data)
+      newDataListeners.forEach((listener) => listener(data))
     })
 
     socket.value.on('userLoggedIn', (data) => {
@@ -49,7 +70,7 @@ export function useSocket() {
     isSocketConnected = true
   }
 
-  // Función para desconectar el socket
+  // Desconecte el socket y limpia
   function disconnect() {
     if (!socket.value) return
     socket.value.disconnect()
@@ -59,7 +80,7 @@ export function useSocket() {
     isSocketConnected = false
   }
 
-  // Conexión automática cuando se monta el componente
+  // Conexión automática en el soporte
   onMounted(() => {
     const token = auth.getToken()
 
@@ -67,7 +88,7 @@ export function useSocket() {
       connect(token)
     }
 
-    // Reconexión al volver a estar online
+    // Vuelva a conectarse cuando vuelva a estar en línea
     window.addEventListener('online', () => {
       const latestToken = auth.getToken()
       if (latestToken && typeof latestToken === 'string' && !isConnected.value) {
@@ -82,5 +103,7 @@ export function useSocket() {
     userId,
     connect,
     disconnect,
+    onNewData,
+    offNewData,
   }
 }
