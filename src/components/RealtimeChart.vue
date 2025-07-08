@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue'
+import { ref, computed, watch, toRef } from 'vue'
 import { Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -13,17 +13,11 @@ import {
   Filler,
   TimeScale,
 } from 'chart.js'
-import type {
-  ChartData,
-  ChartOptions,
-  ChartDataset,
-} from 'chart.js'
+import type { ChartData, ChartOptions } from 'chart.js'
 import 'chartjs-adapter-date-fns'
 import { useRealtimeChart } from '~/composables/useRealtimeChart'
-import { computed } from 'vue'
-import { toRef } from 'vue'
 
-// Registrar componentes
+// Registrar componentes Chart.js
 ChartJS.register(
   Title,
   Tooltip,
@@ -36,32 +30,31 @@ ChartJS.register(
   TimeScale
 )
 
+// Definir props (obligatorios y bien nombrados)
 const props = defineProps<{
   plantaCodigo: string
-  variable: string
+  variableCodigo: string
   unidad: string
 }>()
 
-console.log('📦 Props recibidos:', props)
-
+// Obtener refs reactivos para props
 const plantaCodigoRef = toRef(props, 'plantaCodigo')
-const variableCodigoRef = toRef(props, 'variable')
+const variableCodigoRef = toRef(props, 'variableCodigo')
 
+// Usar composable para obtener datos filtrados
 const realtimeChart = useRealtimeChart(plantaCodigoRef, variableCodigoRef)
-
 const chartData = computed(() => realtimeChart.chartData.value)
 
-
-// Definimos el tipo para los datos con x numérico (timestamp)
+// Definir tipo para cada punto
 type DataPoint = { x: number; y: number }
 
-// Computed con tipo ChartData y dataset con DataPoint[]
+// Preparar datos para chart.js
 const chart = computed<ChartData<'line', DataPoint[], unknown>>(() => ({
   datasets: [
     {
-      label: props.variable,
+      label: props.variableCodigo,
       data: chartData.value.map(p => ({
-        x: p.x, // convierte ISO string a timestamp numérico
+        x: p.x,
         y: p.y,
       })),
       borderColor: '#06b6d4',
@@ -74,10 +67,11 @@ const chart = computed<ChartData<'line', DataPoint[], unknown>>(() => ({
       pointHoverBackgroundColor: '#06b6d4',
       pointHoverBorderColor: '#ffffff',
       pointHoverBorderWidth: 2,
-    }
+    },
   ],
 }))
 
+// Opciones de configuración del gráfico
 const chartOptions: ChartOptions<'line'> = {
   responsive: true,
   maintainAspectRatio: false,
@@ -87,12 +81,7 @@ const chartOptions: ChartOptions<'line'> = {
     mode: 'index',
   },
   layout: {
-    padding: {
-      top: 10,
-      right: 20,
-      bottom: 10,
-      left: 20,
-    },
+    padding: { top: 10, right: 20, bottom: 10, left: 20 },
   },
   plugins: {
     legend: {
@@ -102,10 +91,7 @@ const chartOptions: ChartOptions<'line'> = {
       labels: {
         usePointStyle: true,
         pointStyle: 'circle',
-        font: {
-          size: 13,
-          weight: 'bold',
-        },
+        font: { size: 13, weight: 'bold' },
         color: '#374151',
         padding: 15,
         boxWidth: 12,
@@ -120,13 +106,8 @@ const chartOptions: ChartOptions<'line'> = {
       borderWidth: 1,
       cornerRadius: 12,
       displayColors: false,
-      titleFont: {
-        size: 13,
-        weight: 'bold',
-      },
-      bodyFont: {
-        size: 12,
-      },
+      titleFont: { size: 13, weight: 'bold' },
+      bodyFont: { size: 12 },
       padding: 10,
     },
   },
@@ -135,18 +116,12 @@ const chartOptions: ChartOptions<'line'> = {
       type: 'time',
       time: {
         tooltipFormat: 'dd-MM-yyyy HH:mm:ss',
-        displayFormats: {
-          minute: 'HH:mm',
-          hour: 'HH:mm',
-        },
+        displayFormats: { minute: 'HH:mm', hour: 'HH:mm' },
       },
       title: {
         display: true,
         text: 'Tiempo',
-        font: {
-          size: 12,
-          weight: 'bold',
-        },
+        font: { size: 12, weight: 'bold' },
         color: '#374151',
         padding: { top: 8 },
       },
@@ -157,24 +132,17 @@ const chartOptions: ChartOptions<'line'> = {
       },
       ticks: {
         color: '#6b7280',
-        font: {
-          size: 11,
-        },
+        font: { size: 11 },
         padding: 8,
         maxTicksLimit: 8,
       },
-      border: {
-        display: false,
-      },
+      border: { display: false },
     },
     y: {
       title: {
         display: true,
         text: props.unidad,
-        font: {
-          size: 12,
-          weight: 'bold',
-        },
+        font: { size: 12, weight: 'bold' },
         color: '#374151',
         padding: { bottom: 8 },
       },
@@ -187,19 +155,16 @@ const chartOptions: ChartOptions<'line'> = {
       },
       ticks: {
         color: '#6b7280',
-        font: {
-          size: 11,
-        },
+        font: { size: 11 },
         padding: 8,
         maxTicksLimit: 8,
       },
-      border: {
-        display: false,
-      },
+      border: { display: false },
     },
   },
 }
 
+// Puedes monitorear datos entrantes para debug
 watch(chartData, (newVal) => {
   console.log('Datos recibidos para gráfico:', newVal)
 })
@@ -210,26 +175,36 @@ watch(chartData, (newVal) => {
     <!-- Header con indicador de estado -->
     <div class="flex items-center justify-between mb-3">
       <div class="flex items-center space-x-3">
-        <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/30"></div>
+        <div
+          class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/30"
+        ></div>
         <h3 class="text-base font-semibold text-gray-800 dark:text-white">
-          {{ variable }}
+          {{ variableCodigo }}
         </h3>
       </div>
       <div class="text-xs text-gray-500 dark:text-gray-400 font-medium">
         En tiempo real
       </div>
     </div>
-    
+
     <!-- Contenedor del gráfico -->
-    <div class="relative h-[calc(100%-3rem)] rounded-2xl overflow-hidden">
+    <div
+      class="relative h-[calc(100%-3rem)] rounded-2xl overflow-hidden"
+    >
       <Line :data="chart" :options="chartOptions" />
-      
+
       <!-- Overlay sutil para efecto de profundidad -->
-      <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-transparent via-transparent to-white/5 dark:to-black/5"></div>
+      <div
+        class="absolute inset-0 pointer-events-none bg-gradient-to-t from-transparent via-transparent to-white/5 dark:to-black/5"
+      ></div>
     </div>
-    
+
     <!-- Decoración sutil -->
-    <div class="absolute top-3 right-3 w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-30"></div>
-    <div class="absolute bottom-3 left-3 w-1 h-1 bg-cyan-400 rounded-full opacity-20"></div>
+    <div
+      class="absolute top-3 right-3 w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-30"
+    ></div>
+    <div
+      class="absolute bottom-3 left-3 w-1 h-1 bg-cyan-400 rounded-full opacity-20"
+    ></div>
   </div>
 </template>

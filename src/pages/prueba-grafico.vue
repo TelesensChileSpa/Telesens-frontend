@@ -3,7 +3,7 @@ import RealtimeChart from '~/components/RealtimeChart.vue'
 
 // Parámetros fijos directamente en el código
 const plantaCodigo = '1ff85932-8dca-4b09-9c57-92eb06549d18'
-const variableCodigo = 'DfVwj3bkYmHHANY1SYjm'
+const variableCodigo = '1nmPzP79M6lOy11SRdaQ'
 const unidad = '°C'
 </script>
 
@@ -13,7 +13,7 @@ const unidad = '°C'
 
     <RealtimeChart
       :plantaCodigo="plantaCodigo"
-      :variable="variableCodigo"
+      :variableCodigo="variableCodigo"
       :unidad="unidad"
     />
   </div>

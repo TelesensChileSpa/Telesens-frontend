@@ -14,7 +14,7 @@ export function useRealtimeChart(plantaCodigo: Ref<string>, variableCodigo: Ref<
     console.log('Dato recibido en handler:', data)
     console.log('Esperado:', plantaCodigo.value, variableCodigo.value)
 
-    //if (data.plantaCodigo === plantaCodigo.value && data.variableCodigo === variableCodigo.value) {
+    if (data.plantaCodigo === plantaCodigo.value && data.variableCodigo === variableCodigo.value) {
       const punto: DataPoint = {
         x: new Date(data.creado).getTime(),
         y: parseFloat(data.value),
@@ -24,9 +24,9 @@ export function useRealtimeChart(plantaCodigo: Ref<string>, variableCodigo: Ref<
         chartData.value.shift()
       }
       console.log('📈 Dato agregado al gráfico:', punto)
-    //} else {
-      //console.log('❌ Dato ignorado')
-    //}
+    } else {
+      console.log('❌ Dato ignorado')
+    }
   }
 
   const subscribe = () => {
