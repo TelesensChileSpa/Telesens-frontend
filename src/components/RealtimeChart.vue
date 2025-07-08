@@ -41,7 +41,9 @@ const props = defineProps<{
   unidad: string
 }>()
 
-const { chartData } = useRealtimeChart(props.plantaCodigo, props.variable)
+const realtimeChart = useRealtimeChart(props.plantaCodigo, props.variable)
+const chartData = computed(() => realtimeChart.chartData.value)
+
 
 // Definimos el tipo para los datos con x numérico (timestamp)
 type DataPoint = { x: number; y: number }
@@ -52,7 +54,7 @@ const chart = computed<ChartData<'line', DataPoint[], unknown>>(() => ({
     {
       label: props.variable,
       data: chartData.value.map(p => ({
-        x: new Date(p.x).getTime(),  // convierte ISO string a timestamp numérico
+        x: p.x, // convierte ISO string a timestamp numérico
         y: p.y,
       })),
       borderColor: '#06b6d4',
