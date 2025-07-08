@@ -21,6 +21,7 @@ import type {
 import 'chartjs-adapter-date-fns'
 import { useRealtimeChart } from '~/composables/useRealtimeChart'
 import { computed } from 'vue'
+import { toRef } from 'vue'
 
 // Registrar componentes
 ChartJS.register(
@@ -41,7 +42,11 @@ const props = defineProps<{
   unidad: string
 }>()
 
-const realtimeChart = useRealtimeChart(props.plantaCodigo, props.variable)
+const plantaCodigoRef = toRef(props, 'plantaCodigo')
+const variableCodigoRef = toRef(props, 'variable')
+
+const realtimeChart = useRealtimeChart(plantaCodigoRef, variableCodigoRef)
+
 const chartData = computed(() => realtimeChart.chartData.value)
 
 

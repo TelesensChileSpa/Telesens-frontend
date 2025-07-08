@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch, type Ref } from 'vue'
 import { useSocket } from './useSocket'
 
 interface DataPoint {
@@ -6,16 +6,15 @@ interface DataPoint {
   y: number
 }
 
-export function useRealtimeChart(plantaCodigo: string, variableCodigo: string) {
+export function useRealtimeChart(plantaCodigo: Ref<string>, variableCodigo: Ref<string>) {
   const chartData = ref<DataPoint[]>([])
-  const maxPoints = 30
   const { socket } = useSocket()
 
   const handler = (data: any) => {
     console.log('Dato recibido en handler:', data)
-    console.log('Esperado:', plantaCodigo, variableCodigo)
+    console.log('Esperado:', plantaCodigo.value, variableCodigo.value)
 
-    //if (data.plantaCodigo === plantaCodigo && data.variableCodigo === variableCodigo) {
+    //if (data.plantaCodigo === plantaCodigo.value && data.variableCodigo === variableCodigo.value) {
       const punto: DataPoint = {
         x: new Date(data.creado).getTime(),
         y: parseFloat(data.value),
@@ -42,12 +41,10 @@ export function useRealtimeChart(plantaCodigo: string, variableCodigo: string) {
   }
 
   onMounted(() => {
-    // Si ya está conectado, suscribirse
     if (socket.value?.connected) {
       subscribe()
     }
 
-    // Observar cambios en el socket para conectar cuando esté listo
     watch(
       socket,
       (newSocket, oldSocket, onCleanup) => {
