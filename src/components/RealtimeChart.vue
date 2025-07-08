@@ -42,6 +42,8 @@ const props = defineProps<{
   unidad: string
 }>()
 
+console.log('📦 Props recibidos:', props)
+
 const plantaCodigoRef = toRef(props, 'plantaCodigo')
 const variableCodigoRef = toRef(props, 'variable')
 
