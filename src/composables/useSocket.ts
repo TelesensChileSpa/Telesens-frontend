@@ -34,10 +34,6 @@ export function useSocket() {
       auth: { token },
     })
 
-    socket.value.on('connect', () => {
-      console.log('Socket conectado con ID:', socket.value?.id)
-    })
-
     socket.value.on('new-data', (data) => {
       console.log('Evento new-data recibido en socket:', data)
       newDataListeners.forEach((listener) => listener(data))
@@ -62,7 +58,7 @@ export function useSocket() {
     })
 
     socket.value.on('disconnect', (reason) => {
-      console.warn('Socket desconectado:', reason)
+      //console.warn('Socket desconectado:', reason)
       isConnected.value = false
       isSocketConnected = false
     })
