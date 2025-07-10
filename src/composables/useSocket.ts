@@ -35,7 +35,7 @@ export function useSocket() {
     })
 
     socket.value.on('new-data', (data) => {
-      console.log('Evento new-data recibido en socket:', data)
+      //console.log('Evento new-data recibido en socket:', data)
       newDataListeners.forEach((listener) => listener(data))
     })
 
